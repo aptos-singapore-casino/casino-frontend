@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <QueryClientProvider client={queryClient}>
           <DialogProvider>
             <CssBaseline />
-            <ToastContainer theme="dark" position="bottom-right" />
+            <ToastContainer theme="colored" position="bottom-left" />
             <Web3AuthContextProvider>
               <BrowserRouter>
                 <AppRouter />

@@ -1,0 +1,10 @@
+export const TOPBAR_HEIGHT = "60px";
+export const SIDEBAR_WIDTH = "200px";
+export const SCROLLBAR_WIDTH = "20px";
+export const APTOS_NODE_URL = "https://fullnode.testnet.aptoslabs.com";
+export const APTOS_FAUCET_URL = "https://faucet.testnet.aptoslabs.com";
+export const APTOS_RPC_URL = "https://rpc.ankr.com/http/aptos_testnet/v1";
+export const APP_NAME = "LAS APTOS";
+export const APT_PRICE = 5.17;
+export const CASINO_ADDRESS = "0x94553336ecb7a5920686878bac03adb47813ad76fe19c3c7f273d9ace8c8612d";
+export const CASINO_EVENTS_ADDRESS = "0x1da7a20e6800f3d8a0bf4b0ac55129e9ec6beb49c7cf30ef7e91bc58c1db6c0b";

@@ -1,6 +1,6 @@
-export const shortAddress = (address?: string) => {
+export const shortAddress = (address?: string, length = 4) => {
   if (!address) return "";
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  return `${address.slice(0, 2 + length)}...${address.slice(-length)}`;
 };
 
 //8 decimals by default on Aptos
@@ -10,4 +10,10 @@ export const toDisplayString = (number: number | string, digits = 2, decimalsCou
     maximumFractionDigits: digits,
     minimumFractionDigits: digits,
   });
+};
+
+export const unknwonErrorToString = (error: any) => {
+  if (typeof error === "string") return error;
+  if (error instanceof Error) return error.message;
+  return JSON.stringify(error);
 };

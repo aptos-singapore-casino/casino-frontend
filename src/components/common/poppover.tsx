@@ -16,7 +16,6 @@ export const Poppover: FC<Props> = ({ isOpen, close, children }) => {
   }, [isOpen]);
 
   const handleClose = () => {
-    console.log("close");
     close();
   };
 

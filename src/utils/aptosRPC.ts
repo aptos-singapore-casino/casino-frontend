@@ -1,10 +1,9 @@
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { AptosAccount, AptosClient, FaucetClient } from "aptos";
+import { APTOS_FAUCET_URL, APTOS_NODE_URL } from "./constants";
 
 export default class AptosRpc {
   private provider: SafeEventEmitterProvider;
-  NODE_URL = "https://fullnode.devnet.aptoslabs.com";
-  FAUCET_URL = "https://faucet.devnet.aptoslabs.com";
   aptosCoinStore = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
 
   constructor(provider: SafeEventEmitterProvider) {
@@ -47,7 +46,7 @@ export default class AptosRpc {
 
   async getAirdrop(): Promise<any> {
     const address = await this.getAccounts();
-    const faucetClient = new FaucetClient(this.NODE_URL, this.FAUCET_URL);
+    const faucetClient = new FaucetClient(APTOS_NODE_URL, APTOS_FAUCET_URL);
     const response = await faucetClient.fundAccount(address, 100_000_000);
     return response;
   }
@@ -55,7 +54,7 @@ export default class AptosRpc {
   async getBalance(): Promise<any> {
     try {
       const aptosAccount = await this.getAptosAccount();
-      const client = new AptosClient(this.NODE_URL);
+      const client = new AptosClient(APTOS_NODE_URL);
       const resources = await client.getAccountResources(aptosAccount.address());
       const accountResource = resources.find((r) => r.type === this.aptosCoinStore);
       const balance = parseInt((accountResource?.data as any).coin.value);
@@ -68,7 +67,7 @@ export default class AptosRpc {
   async sendTransaction(): Promise<any> {
     try {
       const aptosAccount = await this.getAptosAccount();
-      const client = new AptosClient(this.NODE_URL);
+      const client = new AptosClient(APTOS_NODE_URL);
       const payload = {
         type: "entry_function_payload",
         function: "0x1::coin::transfer",

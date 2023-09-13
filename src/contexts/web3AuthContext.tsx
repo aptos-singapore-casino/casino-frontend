@@ -4,7 +4,7 @@ import { AptosAccount, AptosClient } from "aptos";
 import { FC, ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import AptosRpc from "../utils/aptosRPC";
-import { APTOS_NODE_URL } from "../utils/contants";
+import { APTOS_NODE_URL, APTOS_RPC_URL } from "../utils/constants";
 
 interface Web3AuthContextType {
   login: () => Promise<void>;
@@ -70,11 +70,11 @@ export const Web3AuthContextProvider: FC<{ children: ReactNode }> = ({ children 
       try {
         setIsLoading(true);
         const web3auth = new Web3Auth({
-          clientId: "BCzPTyFNq7rqWWXHEickJKTS3UTdAH-bC0cfkHPOUGPIvjhIyCJcF7viAsqk7hazEiNVFVOwqOIyRYdRSGufzTo",
+          clientId: "BEsU2mh3zqlrwVG8JkFsUvcfM0memwEhNWoj8TyCk5dvsarHa17xW414wwjDxpA_sOaodXLDKP56EtDbZBUCxwU",
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.OTHER,
             chainId: "1",
-            rpcTarget: "https://rpc.ankr.com/http/aptos/v1", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            rpcTarget: APTOS_RPC_URL, // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           uiConfig: {
             theme: "dark",
@@ -85,7 +85,6 @@ export const Web3AuthContextProvider: FC<{ children: ReactNode }> = ({ children 
         });
 
         setWeb3auth(web3auth);
-
         await web3auth.initModal();
         if (web3auth.connected) {
           updateUserInfo(web3auth, web3auth.provider);

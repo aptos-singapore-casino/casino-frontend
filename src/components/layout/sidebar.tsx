@@ -1,8 +1,8 @@
-import { AccountBalanceWallet, AccountCircle, Brush, SmartToy, TravelExplore } from "@mui/icons-material";
+import { AccountCircle, Gamepad } from "@mui/icons-material";
 import { Card, List, ListItem, ListItemButton, ListItemDecorator } from "@mui/joy";
 import { Link, useLocation } from "react-router-dom";
 import { Chat } from "../../plugin/chat/chat";
-import { SIDEBAR_WIDTH, TOPBAR_HEIGHT } from "../../utils/contants";
+import { SIDEBAR_WIDTH, TOPBAR_HEIGHT } from "../../utils/constants";
 import { Flex } from "../common/flex";
 
 const Items = [
@@ -12,25 +12,25 @@ const Items = [
     path: "home",
   },
   {
-    name: "Item 1",
-    icon: <SmartToy />,
-    path: "view1",
+    name: "Roulette",
+    icon: <Gamepad />,
+    path: "roulette",
   },
-  {
-    name: "Item 2",
-    icon: <AccountBalanceWallet />,
-    path: "view2",
-  },
-  {
-    name: "Item 3",
-    icon: <TravelExplore />,
-    path: "view3",
-  },
-  {
-    name: "Theme tester",
-    icon: <Brush />,
-    path: "theme-tester",
-  },
+  // {
+  //   name: "Item 2",
+  //   icon: <AccountBalanceWallet />,
+  //   path: "view2",
+  // },
+  // {
+  //   name: "Item 3",
+  //   icon: <TravelExplore />,
+  //   path: "view3",
+  // },
+  // {
+  //   name: "Theme tester",
+  //   icon: <Brush />,
+  //   path: "theme-tester",
+  // },
 ];
 
 export const Sidebar = () => {

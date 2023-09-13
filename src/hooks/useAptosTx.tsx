@@ -1,39 +1,103 @@
-import { FaucetClient } from "aptos";
+import { FaucetClient, Network, Provider } from "aptos";
+import { useMemo } from "react";
 import { toast } from "react-toastify";
 import { useWeb3Auth } from "../contexts/web3AuthContext";
-import { APTOS_FAUCET_URL, APTOS_NODE_URL } from "../utils/contants";
+import { APTOS_FAUCET_URL, APTOS_NODE_URL, CASINO_ADDRESS, CASINO_EVENTS_ADDRESS } from "../utils/constants";
+import { unknwonErrorToString } from "../utils/utils";
+import { RouletteEventEnum } from "./useAptosEventsListener";
 
 export const useAptosTx = () => {
   const { aptosAccount, aptosClient, address, refetchInfo } = useWeb3Auth();
+  const aptosProvider = useMemo(() => new Provider(Network.TESTNET), []);
 
   const getAirdrop = async () => {
     if (!address) {
       toast.error("not logged in");
       return;
     }
-    const faucetClient = new FaucetClient(APTOS_NODE_URL, APTOS_FAUCET_URL);
     const toastId = toast("requesting funds from faucet ...", { isLoading: true });
-    const response = await faucetClient.fundAccount(address, 100_000_000);
-    toast.update(toastId, { render: "funds received", type: "success", autoClose: 3000, isLoading: false });
-    await refetchInfo();
-    return response;
+    try {
+      const faucetClient = new FaucetClient(APTOS_NODE_URL, APTOS_FAUCET_URL);
+      const response = await faucetClient.fundAccount(address, 100_000_000);
+      toast.update(toastId, { render: "funds received", type: "success", autoClose: 3000, isLoading: false });
+      return response;
+    } catch (error: unknown) {
+      return toast.update(toastId, {
+        render: `error while requesting funds: ${unknwonErrorToString(error)}`,
+        type: "error",
+        autoClose: 3000,
+        isLoading: false,
+      });
+    } finally {
+      await refetchInfo();
+    }
   };
 
-  const sendTransaction = async () => {
+  const requestEvents = async (event: RouletteEventEnum, start: number, limit: number) => {
+    const eventsMap = {
+      [RouletteEventEnum.result]: `result_events`,
+      [RouletteEventEnum.payout]: `payout_events`,
+    };
+    const res = await aptosClient?.getEventsByEventHandle(
+      CASINO_EVENTS_ADDRESS,
+      `${CASINO_ADDRESS}::casino::State`,
+      eventsMap[event],
+      { start, limit }
+    );
+    return res;
+  };
+
+  async function getRouletteEvents(eventName: RouletteEventEnum): Promise<any> {
+    const rouletteEvents = `
+    query MyQuery {
+      events(
+        where: {account_address: {_eq: "${CASINO_EVENTS_ADDRESS}"}, type: {_like: "${CASINO_ADDRESS}::casino::${eventName}"}}
+        order_by: {transaction_version: desc}
+        limit: 1
+      ) {
+        data
+        event_index
+        transaction_version
+        type
+        transaction_block_height
+        sequence_number
+      }
+    }
+    `;
+
+    const response: any = await aptosProvider.queryIndexer({
+      query: rouletteEvents,
+    });
+    return response.events;
+  }
+
+  const viewRequest = async (payload: { function: string; type_arguments: string[]; arguments: any[] }) => {
     if (!aptosAccount || !aptosClient) {
       toast.error("not logged in");
       return;
     }
     try {
-      const payload = {
-        type: "entry_function_payload",
-        function: "0x1::coin::transfer",
-        type_arguments: ["0x1::aptos_coin::AptosCoin"],
-        arguments: [aptosAccount.address().hex(), 717], // sending funds to self
-      };
+      const res = await aptosClient.view(payload);
+      return res;
+    } catch (error) {
+      console.error(error);
+      return error as string;
+    }
+  };
+
+  const sendTransaction = async (payload: {
+    type?: string;
+    function: string;
+    type_arguments: string[];
+    arguments: any[];
+  }) => {
+    if (!aptosAccount || !aptosClient) {
+      toast.error("not logged in");
+      return;
+    }
+    try {
       const txnRequest = await aptosClient.generateTransaction(aptosAccount.address(), payload);
       const signedTxn = await aptosClient.signTransaction(aptosAccount, txnRequest);
-      console.log(signedTxn);
       const toastId = toast("Sending transaction ...", { isLoading: true });
       const transactionRes = await aptosClient.submitTransaction(signedTxn);
       await aptosClient.waitForTransaction(transactionRes.hash);
@@ -45,11 +109,18 @@ export const useAptosTx = () => {
         isLoading: false,
       });
       await refetchInfo();
-      return transactionRes.hash;
+      console.log(transactionRes);
+      return transactionRes.payload;
     } catch (error) {
+      console.error(error);
+      toast(`error while submitting transaction: ${unknwonErrorToString(error)}`, {
+        type: "error",
+        autoClose: 3000,
+        isLoading: false,
+      });
       return error as string;
     }
   };
 
-  return { getAirdrop, sendTransaction };
+  return { getAirdrop, sendTransaction, viewRequest, requestEvents, getRouletteEvents };
 };

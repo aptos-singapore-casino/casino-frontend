@@ -1,7 +1,7 @@
-import { Grid } from "@mui/joy";
+import { Grid, Link, Typography } from "@mui/joy";
 import { FC } from "react";
 
-export const GameCard: FC<{ img: string }> = ({ img }) => {
+export const GameCard: FC<{ title?: string; img?: string; link?: string }> = ({ title, img, link }) => {
   return (
     <Grid
       mt={1}
@@ -9,8 +9,17 @@ export const GameCard: FC<{ img: string }> = ({ img }) => {
       md={2}
       lg={2}
       xl={1.5}
+      href={link}
+      variant="plain"
+      component={Link}
       sx={{
+        textDecoration: "none",
         height: "250px",
+        textAlign: "center",
+        display: "flex",
+        border: (theme) => "1px solid " + theme.palette.neutral[500],
+        justifyContent: "center",
+        alignItems: "center",
         background: `center no-repeat url(${img})`,
         backgroundSize: "cover",
         borderRadius: "10px",
@@ -20,6 +29,8 @@ export const GameCard: FC<{ img: string }> = ({ img }) => {
           transform: "translateY(-5px)",
         },
       }}
-    ></Grid>
+    >
+      {!img && <Typography>Coming soon</Typography>}
+    </Grid>
   );
 };

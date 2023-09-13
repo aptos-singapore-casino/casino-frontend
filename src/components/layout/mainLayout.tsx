@@ -1,6 +1,6 @@
 import { Box } from "@mui/joy";
 import { Outlet } from "react-router-dom";
-import { SIDEBAR_WIDTH, TOPBAR_HEIGHT } from "../../utils/contants";
+import { SIDEBAR_WIDTH, TOPBAR_HEIGHT } from "../../utils/constants";
 import { Flex } from "../common/flex";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";

@@ -20,7 +20,7 @@ export const ChatWindow = () => {
   const inGame = useMemo(() => friends.data?.filter((f) => f.activity), [friends.data]);
   return (
     <Draggable defaultPosition={lastPos} onStop={(_, data) => setLastPos({ x: data.lastX, y: data.lastY })}>
-      <Flex y position="absolute" width="400px" top={0} left={0} sx={{ zIndex: 10 }}>
+      <Flex y position="absolute" width="400px" top={0} left={0} sx={{ zIndex: 20 }}>
         <Flex
           component={Card}
           py={1}
