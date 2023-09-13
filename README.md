@@ -1,27 +1,24 @@
-# React + TypeScript + Vite
+# 🎰 Las Aptos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Las Aptos is not only the first casino on Aptos, it's also the first on-chain casino using the pure on-chain randomness module that is scheduled to release in Q4 of 2024.
 
-Currently, two official plugins are available:
+⚙️ Built using MOVE and React.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📃 **MOVE module**: Using a mock implementation of AIP-41.
+- 💰 **Direct payout**: All payments are on-chain and direct.
+- 🫂 **Social features**: Connect with your friends, showcase your big wins and compete on leaderboards.
 
-## Expanding the ESLint configuration
+## Links
+- [MOVE repo](https://github.com/aptos-singapore-casino/casino-move)
+- [frontend repo](https://github.com/aptos-singapore-casino/casino-frontend)
+- [Aptos testnet](https://explorer.aptoslabs.com/account/3208043c4d71906027766264a92931eab44cda8dbed21cc7649d086a0b033190?network=testnet)
+- [presentation slides](https://docs.google.com/presentation/d/1MaRa-GY7Pdu31olhGvjg6NKANaKL_nP2_EEmuLA-KqU)
+- [demo video](TODO)
+- [live app](https://lasaptos.netlify.app)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Team
 
-- Configure the top-level `parserOptions` property like this:
+This project was build at Hack Singapore 2023 by:
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- [0xForkHunter](https://twitter.com/forkh_eth/)
+- [arjanjohan](https://twitter.com/arjanjohan/)
